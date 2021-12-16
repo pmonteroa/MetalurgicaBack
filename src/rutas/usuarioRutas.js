@@ -19,7 +19,7 @@ const Usuario = require("../modelos/usuariosModel");
             if(usu!== null){
                 return res.send({estado: "ok", msg: "Usuario Encontrado", data: usu});
             } else {
-                return res.send({estado: "ok", msg: "Usuario NO Encontrado"});
+                return res.send({estado: "error", msg: "Usuario NO Encontrado"});
             }
         }
     });
@@ -28,7 +28,7 @@ const Usuario = require("../modelos/usuariosModel");
 
 /**
  * API Rest Consultar todos los usuarios de la BD*/
-usuarioRutas.post("/listar", function (req, res) {
+usuarioRutas.get("/listar", function (req, res) {
     Usuario.find({}, function (error, usu) {
         if (error) {
             return res.send({ estado: "error", msg: "ERROR: Al buscar" });

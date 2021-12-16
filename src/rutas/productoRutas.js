@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { produccionOrdenModel, ProduccionOrdenEstados } = require("../modelos/produccionOrdenModel");
 const productoRutas = Router();
 const Producto = require("../modelos/productosModel");
 
@@ -54,11 +55,28 @@ productoRutas.post("/listar", function (req, res) {
     // Desestructuración
     const data = req.body; /**los datos se guardan en la variable "data" */
     const prod = new Producto(data); /**Instanciamos el modelo Producto */
-    prod.save(function (error) {
+    prod.save(function (error, productoGuardado) {
         if(error){
             return res.send({estado: "error", msg: "ERROR al guardar el producto"});
-        }else{
-            res.send({estado: "ok", msg: "Guardado con exito"});
+        } else {
+            //creamos un objeto con la informacion necesaria para insertar en produccionOrden
+            const dataProduccionOrden = {
+                id_producto: productoGuardado._id,
+                estado: ProduccionOrdenEstados.NO_INICIADO
+            };
+
+            console.log("dataProduccionOrden: " + dataProduccionOrden)
+
+            const produccionOrden = new produccionOrdenModel(dataProduccionOrden);
+
+            produccionOrden.save(function (error) {
+                if (error) {
+                    res.send({estado: "ok", msg: "Producto Guardado pero no se guardo produccion_orden"});
+                } else {
+                    res.send({estado: "ok", msg: "Guardado con exito"});
+                }
+
+            });
         }
 
     });

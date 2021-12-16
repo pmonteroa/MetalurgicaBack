@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//Constantes usada para centralizar los estados de produccion_orden
+const Roles = Object.freeze({
+    ADMINISTRATOR: 'ADMINISTRATOR',
+    PRODUCTION: 'PRODUCTION',
+    INVENTORY: 'INVENTORY'
+});
+
+
 const usuariosModel = new Schema(
     {
         numero_identificacion: {
@@ -27,9 +35,11 @@ const usuariosModel = new Schema(
         },
         rol: {
             type: "string",
+            enum: Object.values(Roles),
             require: true
         }
     }
 );
 
 module.exports = mongoose.model("usuarios", usuariosModel);
+exports.Roles = Roles;
