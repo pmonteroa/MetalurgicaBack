@@ -19,7 +19,7 @@ require("dotenv").config(); /**Importar para poder manipular las variables de en
 
 // Prefijos para llamar las rutas de las APIs
 app.use("/producto", productoRutas); /**Prefijo para referirse a las APIS de las rutas producto */
-app.use("/materia_prima", MPRutas); /**Prefijo para referirse a las APIS de las rutas producto */
+app.use("/materia_prima", MPRutas); /**Prefijo para referirse a las APIS de las rutas materia prima */
 app.use("/usuario", usuarioRutas); /**Prefijo para referirse a las APIS de las rutas usuario */
 app.use("/produccion_orden", produccionOrdenRutas); /**Prefijo para referirse a las APIS de las rutas produccion */
 
