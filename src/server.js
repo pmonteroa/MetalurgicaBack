@@ -8,6 +8,10 @@ const { productoRutas } = require("./rutas/productoRutas"); /**Exportar las ruta
 const MateriaPrima = require ("./modelos/MPModel"); /**Esquema de la MP */
 const { MPRutas } = require("./rutas/MPRutas"); /**Exportar las rutas de MP */
 
+const Usuario = require ("./modelos/usuariosModel"); /**Esquema de los productos */
+const { usuarioRutas } = require("./rutas/usuarioRutas"); /**Exportar las rutas de productos */
+
+const { produccionOrdenRutas } = require("./rutas/produccionOrdenRutas"); /**Exportar las rutas de produccion */
 
 app.use(cors()); /** Indicando que permita acceder a las API desde cualquier ubicacion */
 app.use(express.json()); //Middleware convertir json()
@@ -15,7 +19,9 @@ require("dotenv").config(); /**Importar para poder manipular las variables de en
 
 // Prefijos para llamar las rutas de las APIs
 app.use("/producto", productoRutas); /**Prefijo para referirse a las APIS de las rutas producto */
-app.use("/materia_prima", MPRutas); /**Prefijo para referirse a las APIS de las rutas Materia Prima */
+app.use("/materia_prima", MPRutas); /**Prefijo para referirse a las APIS de las rutas producto */
+app.use("/usuario", usuarioRutas); /**Prefijo para referirse a las APIS de las rutas usuario */
+app.use("/produccion_orden", produccionOrdenRutas); /**Prefijo para referirse a las APIS de las rutas produccion */
 
 //Establecer conexion con la base de datos
 mongoose.connect(process.env.MONGODB_SERVER_URL)
