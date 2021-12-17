@@ -62,8 +62,6 @@ const Producto = require("../modelos/productosModel");
                 estado: ProduccionOrdenEstados.NO_INICIADO
             };
 
-            console.log("dataProduccionOrden: " + dataProduccionOrden)
-
             const produccionOrden = new produccionOrdenModel(dataProduccionOrden);
 
             produccionOrden.save(function (error) {
