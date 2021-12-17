@@ -29,17 +29,14 @@ const Producto = require("../modelos/productosModel");
 
 /**
  * API Rest Consultar todos los productos de la BD*/
-productoRutas.post("/listar", function (req, res) {
+ productoRutas.get("/listar", function (req, res) {
     Producto.find({}, function (error, prod) {
         if (error) {
             return res.send({ estado: "error", msg: "ERROR: Al buscar" });
         } else {
-            if (prod !== null) {
-                return res.send({ estado: "ok", msg: "Producto Encontrado", data: prod });
-            } else {
-                return res.send({ estado: "error", msg: "Producto NO Encontrado" });
-            }
+            return res.send({ estado: "ok", msg: "Productos Encontrados", data: prod });
         }
+        
     })
 });
 
@@ -48,13 +45,13 @@ productoRutas.post("/listar", function (req, res) {
  * Descripcion: Guarda un nuevo producto en la BD
  * Ruta: /guardar
  * Metodo: POST
- * Datos de entrada: {nombre: "prueba", unidad_medida: "xxxxx" ,valor: 200}
+ * Datos de entrada: {nombre: "prueba", valor: 200 ,estado: "PENDING", estado_eliminacion:1}
  * Respuesta: {estado: "ok", msg:"producto guardado"}
  */
  productoRutas.post("/guardar", function (req, res) { //la variable req, es todo lo que manda el cliente
-    // Desestructuración
-    const data = req.body; /**los datos se guardan en la variable "data" */
+    const data = req.body; /**Almacena en la variable "data", los datos enviados desde el Frontend */
     const prod = new Producto(data); /**Instanciamos el modelo Producto */
+    console.log("DATA",data); /** Visualizar en la terminal los datos recibidos por el front */
     prod.save(function (error, productoGuardado) {
         if(error){
             return res.send({estado: "error", msg: "ERROR al guardar el producto"});
