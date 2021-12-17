@@ -5,7 +5,7 @@ const mongoose = require ("mongoose"); /**Libreria Mongo */
 const Producto = require ("./modelos/productosModel"); /**Esquema de los productos */
 const { productoRutas } = require("./rutas/productoRutas"); /**Exportar las rutas de productos */
 
-const MateriaPrima = require ("./modelos/MPModel"); /**Esquema de los MP */
+const MateriaPrima = require ("./modelos/MPModel"); /**Esquema de la MP */
 const { MPRutas } = require("./rutas/MPRutas"); /**Exportar las rutas de MP */
 
 
@@ -15,7 +15,7 @@ require("dotenv").config(); /**Importar para poder manipular las variables de en
 
 // Prefijos para llamar las rutas de las APIs
 app.use("/producto", productoRutas); /**Prefijo para referirse a las APIS de las rutas producto */
-app.use("/materia_prima", MPRutas); /**Prefijo para referirse a las APIS de las rutas producto */
+app.use("/materia_prima", MPRutas); /**Prefijo para referirse a las APIS de las rutas Materia Prima */
 
 //Establecer conexion con la base de datos
 mongoose.connect(process.env.MONGODB_SERVER_URL)
