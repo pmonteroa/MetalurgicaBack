@@ -28,12 +28,12 @@ const MP = require("../modelos/MPModel");
 /**
  * API Rest Consultar toda la MP de la BD*/
 MPRutas.post("/listar", function (req, res) {
-    MP.find({}, function (error, prod) {
+    MP.find({}, function (error, matp) {
         if (error) {
             return res.send({ estado: "error", msg: "ERROR: Al buscar" });
         } else {
-            if (prod !== null) {
-                return res.send({ estado: "ok", msg: "Producto Encontrado", data: prod });
+            if (matp !== null) {
+                return res.send({ estado: "ok", msg: "Producto Encontrado", data: matp });
             } else {
                 return res.send({ estado: "error", msg: "Producto NO Encontrado" });
             }
@@ -46,14 +46,14 @@ MPRutas.post("/listar", function (req, res) {
  * Descripcion: Guarda un nuevo producto en la BD
  * Ruta: /guardar
  * Metodo: POST
- * Datos de entrada: {nombre: "prueba", unidad_medida: "xxxxx" ,valor: 200}
+ * Datos de entrada: {descripcion: "prueba", unidad_medida: "xxxxx" , stock: "xxx", valor: 200}
  * Respuesta: {estado: "ok", msg:"producto guardado"}
  */
  MPRutas.post("/guardar", function (req, res) { //la variable req, es todo lo que manda el cliente
     // Desestructuración
     const data = req.body; /**los datos se guardan en la variable "data" */
-    const prod = new MP(data); /**Instanciamos el modelo Materia Prima */
-    prod.save(function (error) {
+    const matp = new MP(data); /**Instanciamos el modelo Materia Prima */
+    matp.save(function (error) {
         if(error){
             return res.send({estado: "error", msg: "ERROR al guardar MP"});
         }else{
