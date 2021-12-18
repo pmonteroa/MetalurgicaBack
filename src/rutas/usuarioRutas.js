@@ -3,6 +3,48 @@ const usuarioRutas = Router();
 const Usuario = require("../modelos/usuariosModel");
 
 /**
+ * API Rest Login
+ * Descripcion: Usada para validar el login en la aplicacion
+ * Ruta: /login
+ * Metodo: POST
+ * Datos de entrada: {"usuario": "mcabales@correo.com", "contrasena": "1234"}
+ * Respuesta: { "estado": "ok", "msg": "Usuario encontrado", "data": { "numero_identificacion": 1024587789, "nombres": "maria", "apellidos": "cabrales", "usuario": "mcabales@correo.com", "rol": "ADMINISTRATOR" } }
+ */
+ usuarioRutas.post("/login", function(req, res) {
+	//Obtenemos la información de los campos que vienen en el JSON
+    //Capturar usuario y contrasena
+    const {usuario, contrasena} = req.body;
+	
+	Usuario.findOne({ usuario }, function (error, usuarioEncontrado) { /**Busca por usuario */
+		if (error) {
+			return res.status(500).json({estado: "error", msg: "ERROR: al consultar el usuario"});
+		} else {
+			if (usuarioEncontrado) {
+				if (usuarioEncontrado.contrasena === contrasena) {
+					//creamos objeto con la data que se enviara al front
+					const dataResult = {
+						numero_identificacion: usuarioEncontrado.numero_identificacion,
+						nombres: usuarioEncontrado.nombres,
+						apellidos: usuarioEncontrado.apellidos,
+						usuario: usuarioEncontrado.usuario,
+						rol: usuarioEncontrado.rol
+					}
+					usuarioEncontrado.contrasena = null;
+					return res.status(200).json({estado: "ok", msg: "Usuario encontrado", data: dataResult});
+				} else {
+					//Se encontro un usuario pero no coincidio la contrasena
+					return res.status(200).json({estado: "error", msg: "Credenciales invalidas"});
+				}
+				
+			} else {
+				//no se encontro una coincidencia para el usuario buscado
+				return res.status(200).json({estado: "error", msg: "Credenciales invalidas"});
+			}
+		}
+	});
+});
+
+/**
  * API Rest Consultar Usuario
  * Descripcion: Consulta un nuevo usuario en la BD
  * Ruta: /consultar
