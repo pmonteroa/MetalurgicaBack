@@ -15,12 +15,11 @@ const Producto = require("../modelos/productosModel");
     const { nombre } = req.body;
     console.log("DATA",nombre);
     Producto.findOne({ nombre }, function (error, prod) { /**Busca por el nombre */
-        console.log("Producto",prod);
-        console.log("Error",error);
+        // console.log("Producto",prod);
+        // console.log("Error",error);
         if(error){
             return res.send({estado: "error", msg: "ERROR: Al buscar"});
         }else{
-            console.log("Condicional producto");
             if(prod!== null){
                 console.log("Condicional producto no null");
                 console.log("Producto 2",prod);
@@ -34,10 +33,24 @@ const Producto = require("../modelos/productosModel");
 
 
 /**
- * API Rest Consultar todos los productos de la BD*/
+ * API Rest Consultar todos los productos de la BD con el estado PENDING*/
  productoRutas.get("/listar", function (req, res) {
     // Producto.find({}, function (error, prod) {
     Producto.find({estado: { $eq:"PENDING" }}, function (error, prod) { //Solo lista los productos con estado pendiente
+        if (error) {
+            return res.send({ estado: "error", msg: "ERROR: Al buscar" });
+        } else {
+            return res.send({ estado: "ok", msg: "Productos Encontrados", data: prod });
+        }
+        
+    })
+});
+
+/**
+ * API Rest Consultar todos los productos de la BD con el estado OK*/
+ productoRutas.get("/produccion", function (req, res) {
+    // Producto.find({}, function (error, prod) {
+    Producto.find({estado: { $eq:"OK" }}, function (error, prod) { //Solo lista los productos con estado pendiente
         if (error) {
             return res.send({ estado: "error", msg: "ERROR: Al buscar" });
         } else {
