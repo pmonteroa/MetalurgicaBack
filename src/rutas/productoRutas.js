@@ -13,11 +13,17 @@ const Producto = require("../modelos/productosModel");
  */
  productoRutas.post("/consultar", function (req, res) {
     const { nombre } = req.body;
+    console.log("DATA",nombre);
     Producto.findOne({ nombre }, function (error, prod) { /**Busca por el nombre */
+        console.log("Producto",prod);
+        console.log("Error",error);
         if(error){
             return res.send({estado: "error", msg: "ERROR: Al buscar"});
         }else{
+            console.log("Condicional producto");
             if(prod!== null){
+                console.log("Condicional producto no null");
+                console.log("Producto 2",prod);
                 return res.send({estado: "ok", msg: "Producto Encontrado", data: prod});
             } else {
                 return res.send({estado: "ok", msg: "Producto NO Encontrado"});
@@ -30,7 +36,8 @@ const Producto = require("../modelos/productosModel");
 /**
  * API Rest Consultar todos los productos de la BD*/
  productoRutas.get("/listar", function (req, res) {
-    Producto.find({}, function (error, prod) {
+    // Producto.find({}, function (error, prod) {
+    Producto.find({estado: { $eq:"PENDING" }}, function (error, prod) { //Solo lista los productos con estado pendiente
         if (error) {
             return res.send({ estado: "error", msg: "ERROR: Al buscar" });
         } else {
@@ -76,5 +83,22 @@ const Producto = require("../modelos/productosModel");
 
     });
 });
+
+/**API Cambiar estado del producto */
+productoRutas.post("/estado", function (req, res) {
+    const { nombre, valor, estado, estado_eliminacion } = req.body; 
+    let i = 0;
+    for (const p of Producto) {
+        console.log("Array",Producto);
+        if (p.nombre.toLowerCase() == nombre.toLowerCase()) {
+            console.log("Array2",Producto);
+            Producto[i].estado = estado;
+            break;
+        }
+        i++;
+    }
+    res.send({ estado: "ok", msg: "Producto Editado" });   
+});
+
 
 exports.productoRutas = productoRutas;
